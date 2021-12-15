@@ -10,32 +10,22 @@ public class ReadFileInput {
         try {
             File myObj = new File("input.txt");
             Scanner myReader = new Scanner(myObj);
+
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String regexExpression = "^(\\d+\\s{1}\\d+\\s{1}[\\\\,\\+,\\*,\\-]{1})\\n?$";
                 Pattern pattern = Pattern.compile(regexExpression);
                 Matcher matcher = pattern.matcher(data);
                 boolean matchFound = matcher.find();
+
                 if (matchFound) {
                     int firstInteger = Integer.parseInt(data.substring(0, data.indexOf(" ")));
                     int secondInteger = Integer.parseInt(data.substring(data.indexOf(" ") + 1, data.indexOf(" ", data.indexOf(" ") + 1)));
                     String operation = data.substring(data.length() - 1);
-                    switch (operation) {
-                        case "*": {
-                            System.out.println(firstInteger + " " + operation + " " + secondInteger + " = " + (firstInteger * secondInteger));
-                            break;
-                        }
-                        case "/": {
-                            System.out.println(firstInteger + " " + operation + " " + secondInteger + " = " + (firstInteger / secondInteger));
-                            break;
-                        }
-                        case "+": {
-                            System.out.println(firstInteger + " " + operation + " " + secondInteger + " = " + (firstInteger + secondInteger));
-                            break;
-                        }
-                        case "-": {
-                            System.out.println(firstInteger + " " + operation + " " + secondInteger + " = " + (firstInteger - secondInteger));
-                            break;
+                    for (ArithmeticOperation arithmeticOperation : ArithmeticOperation.values()
+                    ) {
+                        if (arithmeticOperation.getText().equals(operation)) {
+                            System.out.println(firstInteger + " " + operation + " " + secondInteger + " = " + arithmeticOperation.apply(firstInteger, secondInteger));
                         }
                     }
                 } else {

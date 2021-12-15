@@ -27,23 +27,10 @@ public class FilesReadWrite {
                     int firstInteger = Integer.parseInt(data.substring(0, data.indexOf(" ")));
                     int secondInteger = Integer.parseInt(data.substring(data.indexOf(" ") + 1, data.indexOf(" ", data.indexOf(" ") + 1)));
                     String operation = data.substring(data.length() - 1);
-
-                    switch (operation) {
-                        case "*": {
-                            bufferedWriter.write(firstInteger + " " + operation + " " + secondInteger + " = " + (firstInteger * secondInteger));
-                            break;
-                        }
-                        case "/": {
-                            bufferedWriter.write(firstInteger + " " + operation + " " + secondInteger + " = " + (firstInteger / secondInteger));
-                            break;
-                        }
-                        case "+": {
-                            bufferedWriter.write(firstInteger + " " + operation + " " + secondInteger + " = " + (firstInteger + secondInteger));
-                            break;
-                        }
-                        case "-": {
-                            bufferedWriter.write(firstInteger + " " + operation + " " + secondInteger + " = " + (firstInteger - secondInteger));
-                            break;
+                    for (ArithmeticOperation arithmeticOperation : ArithmeticOperation.values()
+                    ) {
+                        if (arithmeticOperation.getText().equals(operation)) {
+                            bufferedWriter.write(firstInteger + " " + operation + " " + secondInteger + " = " + arithmeticOperation.apply(firstInteger,secondInteger));
                         }
                     }
                 } else {
