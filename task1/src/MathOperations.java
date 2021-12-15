@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.Scanner;
 
-public class math_operations {
+public class MathOperations {
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("a = ");
@@ -35,7 +35,7 @@ public class math_operations {
                     System.out.println("Please enter a valid operation (*, /, +, -)");
                     failed = true;
             }
-            }
-            while (failed);
         }
+        while (failed);
+    }
 }
