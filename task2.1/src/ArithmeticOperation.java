@@ -6,7 +6,7 @@ public enum ArithmeticOperation {
     },
     DIVIDE("/") {
         public double apply(int a, int b) {
-            return a / b;
+            return (double) a / b;
         }
     },
     SUBTRACT("-") {

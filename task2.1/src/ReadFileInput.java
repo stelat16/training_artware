@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,34 +8,33 @@ import java.util.regex.Pattern;
 
 public class ReadFileInput {
     public static void main(String[] args) throws IOException {
-        try {
-            File myObj = new File("input.txt");
-            Scanner myReader = new Scanner(myObj);
+        try (
+                Scanner myReader = new Scanner(new File("input.txt"));) {
+            String data;
+            String regexExpression = "^(\\d+)+\\s{1}(\\d+)+\\s{1}([\\/,\\+,\\*,\\-]{1})\\n?$";
+            Pattern pattern = Pattern.compile(regexExpression);
+            Matcher matcher;
 
             while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                String regexExpression = "^(\\d+\\s{1}\\d+\\s{1}[\\\\,\\+,\\*,\\-]{1})\\n?$";
-                Pattern pattern = Pattern.compile(regexExpression);
-                Matcher matcher = pattern.matcher(data);
-                boolean matchFound = matcher.find();
+                data = myReader.nextLine();
+                matcher = pattern.matcher(data);
 
-                if (matchFound) {
-                    int firstInteger = Integer.parseInt(data.substring(0, data.indexOf(" ")));
-                    int secondInteger = Integer.parseInt(data.substring(data.indexOf(" ") + 1, data.indexOf(" ", data.indexOf(" ") + 1)));
-                    String operation = data.substring(data.length() - 1);
-                    for (ArithmeticOperation arithmeticOperation : ArithmeticOperation.values()
-                    ) {
+                if (!matcher.find()) {
+                    System.out.println("This line does not match the pattern <integer> <integer> <operation>");
+                } else {
+                    int firstInteger = Integer.parseInt(matcher.group(1));
+                    int secondInteger = Integer.parseInt(matcher.group(2));
+                    String operation = matcher.group(3);
+                    for (ArithmeticOperation arithmeticOperation : ArithmeticOperation.values()) {
                         if (arithmeticOperation.getText().equals(operation)) {
-                            System.out.println(firstInteger + " " + operation + " " + secondInteger + " = " + arithmeticOperation.apply(firstInteger, secondInteger));
+                            System.out.println(String.format("%d %s %d = %.2f", firstInteger, operation, secondInteger,
+                                    arithmeticOperation.apply(firstInteger, secondInteger)));
                         }
                     }
-                } else {
-                    System.out.println("This line does not match the pattern <integer> <integer> <operation>");
                 }
             }
-            myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            System.err.println("An error occurred.");
             e.printStackTrace();
         }
     }

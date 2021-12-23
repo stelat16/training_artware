@@ -1,3 +1,4 @@
 This line does not match the pattern <integer> <integer> <operation>
-45 - 34 = 11.0
-57 * 2 = 114.0
+55 - 42 = 11.00
+71 * 2 = 114.00
+3252466 / 11 = 97086.89
